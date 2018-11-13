@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestfulApiStarterTemplate.DataStore.Context;
 using RestfulApiStarterTemplate.DataStore.Repository;
 using RestfulApiStarterTemplate.DataStore.Services;
-using RestfulApiStarterTemplate.Models.Dto;
+using RestfulApiStarterTemplate.Models.Dto.Input;
+using RestfulApiStarterTemplate.Models.Dto.Output;
 using RestfulApiStarterTemplate.Models.Entities;
 
 namespace RestfulApiStarterTemplate.Extensions
@@ -15,6 +17,7 @@ namespace RestfulApiStarterTemplate.Extensions
     public static class StartupExtensions
     {
         public const string DefaultConnectionStringKeyName = "Default";
+        public const string DefaultErrorMessageTemplate = "An unexpected fault happened. Please try again later.";
 
         public static void AddDataStore(this IServiceCollection services, IConfiguration configuration)
         {
@@ -29,6 +32,19 @@ namespace RestfulApiStarterTemplate.Extensions
         {
             services.AddScoped<IDataStoreService<Test>, GenericDataStoreService<Test>>();
             services.AddScoped<IDataStoreService<TestChild>, GenericDataStoreService<TestChild>>();
+            services.AddScoped<ITestChildrenDataStoreService, TestChildrenDataStoreService>();
+        }
+
+        public static void UseCustomExceptionHandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(appBuilder =>
+            {
+                appBuilder.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    await context.Response.WriteAsync(DefaultErrorMessageTemplate);
+                });
+            });
         }
 
         public static void InitDataStore(this IApplicationBuilder app)
@@ -100,6 +116,8 @@ namespace RestfulApiStarterTemplate.Extensions
                 cfg.CreateMap<Test, TestDto>()
                     .ForMember(e => e.CountOfChildren, o => o.MapFrom(e => e.TestChildren.Count));
                 cfg.CreateMap<TestChild, TestChildDto>();
+                cfg.CreateMap<TestForCreationDto, Test>();
+                cfg.CreateMap<TestChildForCreationDto, TestChild>();
             });
         }
     }

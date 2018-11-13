@@ -11,8 +11,9 @@ namespace RestfulApiStarterTemplate.DataStore.Repository
         IQueryable<TEntity> Query<TEntity>() where TEntity : BaseEntity;
         IEnumerable<TEntity> Get<TEntity>() where TEntity : BaseEntity;
         Task<TEntity> Get<TEntity>(params object[] id) where TEntity : BaseEntity;
-        Task Insert<TEntity>(TEntity entity) where TEntity : BaseEntity;
-        Task Update<TEntity>(TEntity entity) where TEntity : BaseEntity;
-        Task Delete<TEntity>(TEntity entity) where TEntity : BaseEntity;
+        void Insert<TEntity>(TEntity entity) where TEntity : BaseEntity;
+        void Update<TEntity>(TEntity entity) where TEntity : BaseEntity;
+        void Delete<TEntity>(TEntity entity) where TEntity : BaseEntity;
+        Task<int> SaveChanges();
     }
 }

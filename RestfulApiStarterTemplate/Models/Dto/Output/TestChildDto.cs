@@ -1,6 +1,6 @@
 ﻿using RestfulApiStarterTemplate.Models.Dto.Base;
 
-namespace RestfulApiStarterTemplate.Models.Dto
+namespace RestfulApiStarterTemplate.Models.Dto.Output
 {
     public class TestChildDto : BaseDto
     {

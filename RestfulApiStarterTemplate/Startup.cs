@@ -23,7 +23,10 @@ namespace RestfulApiStarterTemplate
             // add authentication pipeline if needed before the mvc
 
             services
-                .AddMvc()
+                .AddMvc(setupAction =>
+                {
+                    setupAction.ReturnHttpNotAcceptable = true;
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddJsonOptions(options =>
                 {
@@ -44,6 +47,7 @@ namespace RestfulApiStarterTemplate
             else
             {
                 app.UseHsts();
+                app.UseCustomExceptionHandler();
             }
 
             app.InitDataStore();

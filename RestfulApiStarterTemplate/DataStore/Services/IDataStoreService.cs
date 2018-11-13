@@ -11,8 +11,9 @@ namespace RestfulApiStarterTemplate.DataStore.Services
         IQueryable<TEntity> Query();
         IEnumerable<TEntity> Get();
         Task<TEntity> Get(params object[] id);
-        Task<bool> Insert(TEntity entity);
-        Task<bool> Update(TEntity entity);
-        Task<bool> Delete(TEntity entity);
+        bool Insert(TEntity entity);
+        bool Update(TEntity entity);
+        bool Delete(TEntity entity);
+        Task<int> SaveChanges();
     }
 }

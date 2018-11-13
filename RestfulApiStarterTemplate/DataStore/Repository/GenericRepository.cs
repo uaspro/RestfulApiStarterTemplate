@@ -34,7 +34,7 @@ namespace RestfulApiStarterTemplate.DataStore.Repository
             return await entities.FindAsync(id);
         }
 
-        public async Task Insert<TEntity>(TEntity entity) where TEntity : BaseEntity
+        public void Insert<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             if (entity == null)
             {
@@ -43,11 +43,9 @@ namespace RestfulApiStarterTemplate.DataStore.Repository
 
             var entities = Context.Set<TEntity>();
             entities.Add(entity);
-
-            await Context.SaveChangesAsync();
         }
 
-        public async Task Update<TEntity>(TEntity entity) where TEntity : BaseEntity
+        public void Update<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             if (entity == null)
             {
@@ -56,11 +54,9 @@ namespace RestfulApiStarterTemplate.DataStore.Repository
 
             var entities = Context.Set<TEntity>();
             entities.Update(entity);
-
-            await Context.SaveChangesAsync();
         }
 
-        public async Task Delete<TEntity>(TEntity entity) where TEntity : BaseEntity
+        public void Delete<TEntity>(TEntity entity) where TEntity : BaseEntity
         {
             if (entity == null)
             {
@@ -69,8 +65,11 @@ namespace RestfulApiStarterTemplate.DataStore.Repository
 
             var entities = Context.Set<TEntity>();
             entities.Remove(entity);
+        }
 
-            await Context.SaveChangesAsync();
+        public async Task<int> SaveChanges()
+        {
+            return await Context.SaveChangesAsync();
         }
 
         public void Dispose()

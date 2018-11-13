@@ -55,12 +55,12 @@ namespace RestfulApiStarterTemplate.DataStore.Services
             return await Task.FromResult<TEntity>(null);
         }
 
-        public async Task<bool> Insert(TEntity entity)
+        public bool Insert(TEntity entity)
         {
             var result = true;
             try
             {
-                await Repository.Insert(entity);
+                Repository.Insert(entity);
             }
             catch (Exception ex)
             {
@@ -72,12 +72,12 @@ namespace RestfulApiStarterTemplate.DataStore.Services
             return result;
         }
 
-        public async Task<bool> Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
             var result = true;
             try
             {
-                await Repository.Update(entity);
+                Repository.Update(entity);
             }
             catch (Exception ex)
             {
@@ -89,12 +89,12 @@ namespace RestfulApiStarterTemplate.DataStore.Services
             return result;
         }
 
-        public async Task<bool> Delete(TEntity entity)
+        public bool Delete(TEntity entity)
         {
             var result = true;
             try
             {
-                await Repository.Delete(entity);
+                Repository.Delete(entity);
             }
             catch (Exception ex)
             {
@@ -104,6 +104,20 @@ namespace RestfulApiStarterTemplate.DataStore.Services
             }
 
             return result;
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            try
+            {
+                return await Repository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, string.Format(ErrorMessageTemplate, nameof(SaveChanges)));
+            }
+
+            return await Task.FromResult(0);
         }
 
         public void Dispose()
